@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace Evolution
 {
-	abstract class ReflectionCommandHandlerBase<TEnum> : ICommandHandler where TEnum : struct, Enum
+	abstract class ReflectionCommandHandlerBase<TEnum> : ICreatureCommandHandler where TEnum : struct, Enum
 	{
-		public void ExecuteCommand(Command command, IField field, Creature creature)
+		public void ExecuteCommand(Command command, Creature creature)
 		{
-			if(PureHandler(command, field, creature) == true) return;
+			if(PureHandler(command, creature) == true) return;
 
 			var values = Enum.GetValues(typeof(TEnum)).OfType<TEnum>().ToArray();
 
@@ -23,15 +23,15 @@ namespace Evolution
 				throw new InvalidOperationException($"{(int)(object)targeValues.First()} command presents in enum bigger then 1 times");
 			else
 			{
-				var method = GetType().GetMethods(BindingFlags.Instance | BindingFlags.NonPublic)
+				var method = GetType().GetMethods(BindingFlags.Instance | BindingFlags.Public)
 					.Single(s => s.Name == targeValues.First().ToString() && s.GetCustomAttributes(typeof(ReflectionCommandHandlerAttribute), false).Any());
 
-				method.Invoke(this, new object[] { command, field, creature });
+				method.Invoke(this, new object[] { creature });
 			}
 		}
 
 
-		protected virtual bool PureHandler(Command command, IField fieid, Creature creature)
+		protected virtual bool PureHandler(Command command, Creature creature)
 		{
 			return false;
 		}

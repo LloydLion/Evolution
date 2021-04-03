@@ -35,6 +35,8 @@ namespace Evolution.Models
 
 		public int Height => cells.GetLength(1);
 
+		public FieldViewMode ViewMode { get; set; }
+
 
 		public void EnablePostWrite()
 		{

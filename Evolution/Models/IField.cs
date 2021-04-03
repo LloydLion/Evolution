@@ -13,6 +13,8 @@ namespace Evolution.Models
 
 		int Height { get; }
 
+		FieldViewMode ViewMode { get; }
+
 
 		Cell GetCellAt(int x, int y);
 	}

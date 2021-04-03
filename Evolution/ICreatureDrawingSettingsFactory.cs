@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace Evolution
 {
-	interface ICommandHandler
+	interface ICreatureDrawingSettingsFactory
 	{
-		void ExecuteCommand(Command command, IField field, Creature creature);
+		DrawingSettings CreateSettings(Creature creature, FieldViewMode viewMode);
 	}
 }

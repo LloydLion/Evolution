@@ -25,11 +25,11 @@ namespace Evolution
 		{
 			var commands = new byte[64].Select(s => new Command() { Type = 0 }).ToList();
 
-			field.GetCellAt(0, 0).Entity = new Creature() { Genome = new Genome() { Commands = commands }, Type = CreatureType.Default };
-			field.GetCellAt(1, 0).Entity = new Creature() { Genome = new Genome() { Commands = commands }, Type = CreatureType.Default };
-			field.GetCellAt(2, 0).Entity = new Creature() { Genome = new Genome() { Commands = commands }, Type = CreatureType.Default };
-			field.GetCellAt(3, 0).Entity = new Creature() { Genome = new Genome() { Commands = commands }, Type = CreatureType.Default };
-			field.GetCellAt(4, 0).Entity = new Creature() { Genome = new Genome() { Commands = commands }, Type = CreatureType.Default };
+			field.GetCellAt(0, 15).Entity = new Creature() { Genome = new Genome() { Commands = commands }, Type = CreatureType.Default };
+			field.GetCellAt(1, 31).Entity = new Creature() { Genome = new Genome() { Commands = commands }, Type = CreatureType.Default };
+			field.GetCellAt(2, 47).Entity = new Creature() { Genome = new Genome() { Commands = commands }, Type = CreatureType.Default };
+			field.GetCellAt(3, 63).Entity = new Creature() { Genome = new Genome() { Commands = commands }, Type = CreatureType.Default };
+			field.GetCellAt(4, 79).Entity = new Creature() { Genome = new Genome() { Commands = commands }, Type = CreatureType.Default };
 		}
 
 		public void Update()
@@ -56,10 +56,12 @@ namespace Evolution
 			var pointer = creature.Genome.CurrentPointer;
 
 			var command = creature.Genome.Commands[pointer];
-			creature.Type.CommandHandler.ExecuteCommand(command, field, creature);
+			creature.Type.CommandHandler.ExecuteCommand(command, creature);
 
 			if(pointer + 1 == creature.Genome.Commands.Count) creature.Genome.CurrentPointer = 0;
 			else creature.Genome.CurrentPointer++;
+
+			creature.Update();
 		}
 	}
 }

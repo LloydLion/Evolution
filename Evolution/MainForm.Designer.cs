@@ -48,7 +48,7 @@ namespace Evolution
 			// gameClock
 			// 
 			this.gameClock.Enabled = true;
-			this.gameClock.Interval = 1000;
+			this.gameClock.Interval = 1;
 			this.gameClock.Tick += new System.EventHandler(this.GameClock_Tick);
 			// 
 			// MainForm
