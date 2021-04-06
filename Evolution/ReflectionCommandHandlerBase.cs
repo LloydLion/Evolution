@@ -18,7 +18,10 @@ namespace Evolution
 
 			var targeValues = values.Where(s => (int)(object)s == command.Type);
 
-			if(targeValues.Any() == false) return;
+			if(targeValues.Any() == false)
+			{
+				DefaultHandler(command, creature);
+			}
 			else if(targeValues.Count() >= 2)
 				throw new InvalidOperationException($"{(int)(object)targeValues.First()} command presents in enum bigger then 1 times");
 			else
@@ -34,6 +37,11 @@ namespace Evolution
 		protected virtual bool PureHandler(Command command, Creature creature)
 		{
 			return false;
+		}
+
+		protected virtual void DefaultHandler(Command command, Creature creature)
+		{
+
 		}
 	}
 }

@@ -33,7 +33,7 @@ namespace Evolution.Models
 			EventedPrimaryEnergy += energy;
 			if(EventedPrimaryEnergy < 0)
 			{
-				creatureMustDie?.Invoke();
+				creatureMustDie?.Invoke("Energy end");
 			}
 		}
 

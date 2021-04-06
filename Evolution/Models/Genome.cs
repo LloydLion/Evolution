@@ -10,7 +10,7 @@ namespace Evolution.Models
 	[DebuggerDisplay("{" + nameof(GetDebuggerDisplay) + "(),nq}")]
 	sealed record Genome
 	{
-		public IReadOnlyList<Command> Commands { get; init; }
+		public GenomeList Commands { get; init; }
 
 		public int CurrentPointer { get; set; }
 

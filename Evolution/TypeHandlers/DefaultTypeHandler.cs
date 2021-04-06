@@ -16,33 +16,49 @@ namespace Evolution.TypeHandlers
 			Photo = 0,
 			Move = 1,
 			Duplicate = 2,
-			Eat = 3
+			Eat = 3,
+			WhatMyEnergy
 		}
 
+
+		protected override void DefaultHandler(Command command, Creature creature)
+		{
+			creature.Genome.CurrentPointer += command.Type;
+		}
 
 		[ReflectionCommandHandler]
 		public void Move(Creature creature)
 		{
-			if(creature.Genome.Commands.Count - 1 < creature.Genome.CurrentPointer + 1) return;
+			var field = creature.Cell.Field;
+			(int targetX, int targetY) =
+				SwitchDirectionWithStandardAnotation(creature.Genome.Commands[creature.Genome.CurrentPointer + 1].Type);
 
-			switch(creature.Genome.Commands[creature.Genome.CurrentPointer + 1].Type % 4)
+			int commandOffest;
+
+			if (creature.MoveCreature(targetX, targetY) == true) commandOffest = 1;
+			else
 			{
-				case 0:
-					creature.MoveCreature(1, 0);
-				break;
+				var cell = field.TryGetCreatureCellWithOffest(creature, targetX, targetY);
 
-				case 1:
-					creature.MoveCreature(-1, 0);
-				break;
-
-				case 2:
-					creature.MoveCreature(0, 1);
-				break;
-
-				case 3:
-					creature.MoveCreature(0, -1);
-				break;
+				if (cell == null) commandOffest = 2;
+				else
+					if (cell.Entity is Creature creature2)
+						if (creature.IsFimily(creature2)) commandOffest = 3;
+						else commandOffest = 4;
+					else commandOffest = 5;
 			}
+
+			creature.Genome.CurrentPointer += creature.Genome.Commands[creature.Genome.CurrentPointer + commandOffest + 1].Type;
+		}
+
+		[ReflectionCommandHandler]
+		public void WhatMyEnergy(Creature creature)
+		{
+			var pe = creature.Energy.PrimaryEnergy;
+			var te = 15 * creature.Genome.GetCommandWithOffest(1).Type;
+
+			if(pe >= te) creature.Genome.CurrentPointer += 2;
+			else creature.Genome.CurrentPointer += 3;
 		}
 
 		[ReflectionCommandHandler]
@@ -85,24 +101,8 @@ namespace Evolution.TypeHandlers
 			var field = creature.Cell.Field;
 			ICellEntity entity = null;
 
-			switch (creature.Genome.Commands[creature.Genome.CurrentPointer + 1].Type % 4)
-			{
-				case 0:
-					entity = field.TryGetCreatureCellWithOffest(creature, 1, 0)?.Entity;
-					break;
-
-				case 1:
-					entity = field.TryGetCreatureCellWithOffest(creature, -1, 0)?.Entity;
-					break;
-
-				case 2:
-					entity = field.TryGetCreatureCellWithOffest(creature, 0, 1)?.Entity;
-					break;
-
-				case 3:
-					entity = field.TryGetCreatureCellWithOffest(creature, 0, -1)?.Entity;
-					break;
-			}
+			var dir = SwitchDirectionWithStandardAnotation(creature.Genome.Commands[creature.Genome.CurrentPointer + 1].Type);
+			entity = field.TryGetCreatureCellWithOffest(creature, dir.xOffest, dir.yOffest)?.Entity;
 
 			if(entity != null && entity is IEateble eateble)
 			{
@@ -138,6 +138,20 @@ namespace Evolution.TypeHandlers
 					return new DrawingSettings() { Color = color };
 				default:
 					return new DrawingSettings() { Color = Color.Aqua };
+			}
+		}
+
+		//Static
+		(int xOffest, int yOffest) SwitchDirectionWithStandardAnotation(int switchBase)
+		{
+			switch(switchBase % 4)
+			{
+				case 0: return (+1, 0);
+				case 1: return (-1, 0);
+				case 2: return (0, +1);
+				case 3: return (0, -1);
+
+				default: throw new Exception("It is imposible!");
 			}
 		}
 	}

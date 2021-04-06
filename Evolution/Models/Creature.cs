@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 
 namespace Evolution.Models
 {
-	delegate void CreatureMustDieHandler(string reason = "");
+	delegate void CreatureMustDieHandler(string reason);
 
 
 	[DebuggerDisplay("{" + nameof(GetDebuggerDisplay) + "(),nq}")]
 	sealed record Creature : ICellEntity, IEateble
 	{
-		public const int DuplicateCost = 30;
-		public const int AutoDuplicatePoint = 70;
+		public const int DuplicateCost = 200;
+		public const int AutoDuplicatePoint = 1000;
 		public const int StepCost = 3;
 
 
