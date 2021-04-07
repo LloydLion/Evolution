@@ -30,10 +30,16 @@ namespace Evolution
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
-			this.mainPictureBox = new System.Windows.Forms.PictureBox();
 			this.gameClock = new System.Windows.Forms.Timer(this.components);
+			this.mainPictureBox = new System.Windows.Forms.PictureBox();
 			((System.ComponentModel.ISupportInitialize)(this.mainPictureBox)).BeginInit();
 			this.SuspendLayout();
+			// 
+			// gameClock
+			// 
+			this.gameClock.Enabled = true;
+			this.gameClock.Interval = 1;
+			this.gameClock.Tick += new System.EventHandler(this.GameClock_Tick);
 			// 
 			// mainPictureBox
 			// 
@@ -44,12 +50,6 @@ namespace Evolution
 			this.mainPictureBox.Size = new System.Drawing.Size(800, 800);
 			this.mainPictureBox.TabIndex = 0;
 			this.mainPictureBox.TabStop = false;
-			// 
-			// gameClock
-			// 
-			this.gameClock.Enabled = true;
-			this.gameClock.Interval = 1;
-			this.gameClock.Tick += new System.EventHandler(this.GameClock_Tick);
 			// 
 			// MainForm
 			// 
@@ -67,8 +67,7 @@ namespace Evolution
 		}
 
 		#endregion
-
-		private System.Windows.Forms.PictureBox mainPictureBox;
 		private System.Windows.Forms.Timer gameClock;
+		private System.Windows.Forms.PictureBox mainPictureBox;
 	}
 }

@@ -28,8 +28,8 @@ namespace Evolution.Helpers
 
 			int caculateSun()
 			{
-				var level = (field.Height - creature.Cell.YPosition) / 5;
-				var unRes = 10 - level;
+				var level = (field.Height - creature.Cell.YPosition) / 10;
+				var unRes = 20 - level;
 
 				return unRes < 0 ? 0 : unRes;
 			}

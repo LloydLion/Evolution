@@ -25,11 +25,7 @@ namespace Evolution
 		{
 			var commands = new byte[64].Select(s => new Command() { Type = 0 }).ToList();
 
-			field.GetCellAt(0, 15).Entity = new Creature() { Genome = new Genome() { Commands = new GenomeList(commands) }, Type = CreatureType.Default };
-			field.GetCellAt(1, 31).Entity = new Creature() { Genome = new Genome() { Commands = new GenomeList(commands) }, Type = CreatureType.Default };
-			field.GetCellAt(2, 47).Entity = new Creature() { Genome = new Genome() { Commands = new GenomeList(commands) }, Type = CreatureType.Default };
-			field.GetCellAt(3, 63).Entity = new Creature() { Genome = new Genome() { Commands = new GenomeList(commands) }, Type = CreatureType.Default };
-			field.GetCellAt(4, 79).Entity = new Creature() { Genome = new Genome() { Commands = new GenomeList(commands) }, Type = CreatureType.Default };
+			field.GetCellAt(0, 159).Entity = new Creature() { Genome = new Genome() { Commands = new GenomeList(commands) }, Type = CreatureType.Default };
 		}
 
 		public void Update()
@@ -38,10 +34,10 @@ namespace Evolution
 
 			for(int x = 0; x < field.Weight; x++)
 			{
-				for(int y = 0; y < field.Height; y++)
+				for (int y = 0; y < field.Height; y++)
 				{
 					var entity = field.GetCellAt(x, y).Entity;
-					if(entity is not Creature creature) continue;
+					if (entity is not Creature creature) continue;
 
 					UpdateCreature(creature);
 				}
